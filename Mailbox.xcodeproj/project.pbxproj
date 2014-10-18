@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		E6ABC21B19F2F2C400228A98 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6ABC21A19F2F2C400228A98 /* AppDelegate.swift */; };
-		E6ABC21D19F2F2C400228A98 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6ABC21C19F2F2C400228A98 /* ViewController.swift */; };
 		E6ABC22019F2F2C400228A98 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6ABC21E19F2F2C400228A98 /* Main.storyboard */; };
 		E6ABC22219F2F2C400228A98 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6ABC22119F2F2C400228A98 /* Images.xcassets */; };
 		E6ABC22519F2F2C400228A98 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6ABC22319F2F2C400228A98 /* LaunchScreen.xib */; };
 		E6ABC23119F2F2C400228A98 /* MailboxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6ABC23019F2F2C400228A98 /* MailboxTests.swift */; };
+		E6ABC23B19F307FB00228A98 /* MailboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6ABC23A19F307FB00228A98 /* MailboxViewController.swift */; };
+		E6ABC23E19F30A4800228A98 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6ABC23D19F30A4800228A98 /* Util.swift */; };
+		E6ABC24019F312BE00228A98 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6ABC23F19F312BE00228A98 /* MessageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,13 +31,15 @@
 		E6ABC21519F2F2C400228A98 /* Mailbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mailbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6ABC21919F2F2C400228A98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E6ABC21A19F2F2C400228A98 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E6ABC21C19F2F2C400228A98 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E6ABC21F19F2F2C400228A98 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E6ABC22119F2F2C400228A98 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E6ABC22419F2F2C400228A98 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		E6ABC22A19F2F2C400228A98 /* MailboxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MailboxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6ABC22F19F2F2C400228A98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E6ABC23019F2F2C400228A98 /* MailboxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxTests.swift; sourceTree = "<group>"; };
+		E6ABC23A19F307FB00228A98 /* MailboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxViewController.swift; sourceTree = "<group>"; };
+		E6ABC23D19F30A4800228A98 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		E6ABC23F19F312BE00228A98 /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,8 +81,8 @@
 		E6ABC21719F2F2C400228A98 /* Mailbox */ = {
 			isa = PBXGroup;
 			children = (
+				E6ABC23C19F30A3A00228A98 /* ViewContorllers */,
 				E6ABC21A19F2F2C400228A98 /* AppDelegate.swift */,
-				E6ABC21C19F2F2C400228A98 /* ViewController.swift */,
 				E6ABC21E19F2F2C400228A98 /* Main.storyboard */,
 				E6ABC22119F2F2C400228A98 /* Images.xcassets */,
 				E6ABC22319F2F2C400228A98 /* LaunchScreen.xib */,
@@ -110,6 +114,16 @@
 				E6ABC22F19F2F2C400228A98 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E6ABC23C19F30A3A00228A98 /* ViewContorllers */ = {
+			isa = PBXGroup;
+			children = (
+				E6ABC23F19F312BE00228A98 /* MessageViewController.swift */,
+				E6ABC23A19F307FB00228A98 /* MailboxViewController.swift */,
+				E6ABC23D19F30A4800228A98 /* Util.swift */,
+			);
+			name = ViewContorllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,8 +226,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6ABC21D19F2F2C400228A98 /* ViewController.swift in Sources */,
 				E6ABC21B19F2F2C400228A98 /* AppDelegate.swift in Sources */,
+				E6ABC23E19F30A4800228A98 /* Util.swift in Sources */,
+				E6ABC24019F312BE00228A98 /* MessageViewController.swift in Sources */,
+				E6ABC23B19F307FB00228A98 /* MailboxViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
