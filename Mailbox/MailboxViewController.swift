@@ -12,12 +12,13 @@ class MailboxViewController: UIViewController {
     
     //    private let kDragThreshold1 = 0.25 * UIScreen.mainScreen().bounds.width
     //    private let kDragThreshold2 = 0.75 * UIScreen.mainScreen().bounds.width
-    private let kDragThreshold1 : CGFloat = 70
-    private let kDragThreshold2 : CGFloat = UIScreen.mainScreen().bounds.width - 70
+    private let kDragThreshold1 : CGFloat = 60
+    private let kDragThreshold2 : CGFloat = UIScreen.mainScreen().bounds.width - 60
     
     private enum SwipeAction {
         case LeftCancel     // User has not swiped left far enough to take any action
         case Schedule       // User swiped left to schedule
+        case List           // User swiped left to list
         case RightCancel    // User has not swiped right far enough to take any action
         case Archive        // User swiped right to archive
         case Delete         // User swiped right to delete
@@ -40,8 +41,10 @@ class MailboxViewController: UIViewController {
         if (swipeDistance < 0) { // Swipe left
             if (swipeDistance > -kDragThreshold1) { // Gray Schedule
                 return .LeftCancel
-            } else { // Yellow Schedule
+            } else if (swipeDistance > -kDragThreshold2) { // Yellow Schedule
                 return .Schedule
+            } else { // Brown List
+                return .List
             }
         } else { // Swipe right
             if (swipeDistance < kDragThreshold1) { // Gray archive
@@ -78,7 +81,7 @@ class MailboxViewController: UIViewController {
                 case .Archive, .Delete:
                     self.messageView.frame.origin.x = screenWidth
                     break
-                case .Schedule:
+                case .Schedule, .List:
                     self.messageView.frame.origin.x = -self.messageView.frame.width
                     break
                 default: // LeftCancel, RightCancel
@@ -99,6 +102,9 @@ class MailboxViewController: UIViewController {
                 break
             case .Schedule:
                 messageBackground.backgroundColor = UIColor.yellowColor()
+                break
+            case .List:
+                messageBackground.backgroundColor = UIColor.brownColor()
                 break
             default: // LeftCancel, RightCancel
                 messageBackground.backgroundColor = UIColor.grayColor()
