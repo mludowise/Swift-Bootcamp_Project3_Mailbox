@@ -42,12 +42,14 @@ class MailboxViewController: UIViewController {
     @IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var rescheduleView: UIImageView!
     @IBOutlet weak var listView: UIImageView!
+    @IBOutlet weak var menuView: UIImageView!
 
     @IBOutlet weak var scrollView: UIScrollView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         resizeScrollViewForChildren(scrollView)
+        menuView.frame.origin.x = -menuView.frame.width
     }
 
     // Returns which action the user indends to take based how far they swiped
@@ -142,7 +144,7 @@ class MailboxViewController: UIViewController {
 
     @IBAction func onMessagePan(panGestureRecognizer: UIPanGestureRecognizer) {
         //        var point = panGestureRecognizer.locationInView(view)
-        var velocity = panGestureRecognizer.velocityInView(view)
+//        var velocity = panGestureRecognizer.velocityInView(view)
         var translation = panGestureRecognizer.translationInView(messageView)
         
         var screenWidth = UIScreen.mainScreen().bounds.width
@@ -166,7 +168,6 @@ class MailboxViewController: UIViewController {
                     if (action != .CancelArchive && action != .CancelSchedule) {
                         self.removeRow({ () -> Void in
                             self.showScreenForAction(action)
-                            println("removed")
                         })
                     }
             })
@@ -181,7 +182,6 @@ class MailboxViewController: UIViewController {
     }
     
     @IBAction func onViewTap(sender: UITapGestureRecognizer) {
-        println("tap")
         if (sender.view != nil) {
             UIView.animateWithDuration(0.5, animations: { () -> Void in
                 sender.view!.alpha = 0
@@ -189,5 +189,25 @@ class MailboxViewController: UIViewController {
                     sender.view!.hidden = false
             }
         }
+    }
+    
+    @IBAction func onPanFromLeftEdgeOfScreen(panGestureRecognizer: UIScreenEdgePanGestureRecognizer) {
+        println("edge")
+        var translation = panGestureRecognizer.translationInView(messageView)
+        menuView.frame.origin.x = translation.x
+        if (panGestureRecognizer.state == UIGestureRecognizerState.Ended) {
+            var menuPosX : CGFloat = 0
+            if (translation.x > 0) { // Show Menu
+                menuPosX = 0
+            } else { // Hide Menu
+                menuPosX = -menuView.frame.width
+            }
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                self.menuView.frame.origin.x = menuPosX
+            })
+        }
+    }
+    @IBAction func onTapFeed(sender: AnyObject) {
+        println("tap")
     }
 }

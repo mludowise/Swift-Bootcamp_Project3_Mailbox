@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E608287219F43977006E5AFD /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608287119F43977006E5AFD /* TestViewController.swift */; };
 		E6ABC21B19F2F2C400228A98 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6ABC21A19F2F2C400228A98 /* AppDelegate.swift */; };
 		E6ABC22019F2F2C400228A98 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6ABC21E19F2F2C400228A98 /* Main.storyboard */; };
 		E6ABC22219F2F2C400228A98 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6ABC22119F2F2C400228A98 /* Images.xcassets */; };
@@ -27,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E608287119F43977006E5AFD /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestViewController.swift; path = Mailbox/TestViewController.swift; sourceTree = "<group>"; };
 		E6ABC21519F2F2C400228A98 /* Mailbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mailbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6ABC21919F2F2C400228A98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E6ABC21A19F2F2C400228A98 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 		E6ABC20C19F2F2C400228A98 = {
 			isa = PBXGroup;
 			children = (
+				E608287119F43977006E5AFD /* TestViewController.swift */,
 				E6ABC21719F2F2C400228A98 /* Mailbox */,
 				E6ABC22D19F2F2C400228A98 /* MailboxTests */,
 				E6ABC21619F2F2C400228A98 /* Products */,
@@ -225,6 +228,7 @@
 			files = (
 				E6ABC21B19F2F2C400228A98 /* AppDelegate.swift in Sources */,
 				E6ABC23E19F30A4800228A98 /* Util.swift in Sources */,
+				E608287219F43977006E5AFD /* TestViewController.swift in Sources */,
 				E6ABC23B19F307FB00228A98 /* MailboxViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
