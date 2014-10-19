@@ -33,11 +33,7 @@
                                         <rect key="frame" x="0.0" y="37" width="320" height="42"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="feed" id="2hY-aV-Ufo">
-                                        <rect key="frame" x="0.0" y="165" width="320" height="1202"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    </imageView>
-                                    <view autoresizesSubviews="NO" contentMode="scaleToFill" id="8U4-Fd-uIs">
+                                    <view autoresizesSubviews="NO" contentMode="scaleToFill" id="8U4-Fd-uIs" userLabel="Message Background">
                                         <rect key="frame" x="0.0" y="79" width="320" height="86"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
@@ -60,6 +56,10 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="feed" id="2hY-aV-Ufo">
+                                        <rect key="frame" x="0.0" y="165" width="320" height="1202"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
                                 </subviews>
                             </scrollView>
                         </subviews>
@@ -68,6 +68,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="1367"/>
                     <connections>
+                        <outlet property="feedView" destination="2hY-aV-Ufo" id="lWq-9I-Hk9"/>
                         <outlet property="messageBackground" destination="8U4-Fd-uIs" id="FW8-OB-Okv"/>
                         <outlet property="messageView" destination="VSy-ub-tnm" id="f5c-sX-FnS"/>
                         <outlet property="scrollView" destination="3cj-PQ-wdj" id="xlF-0R-GDn"/>

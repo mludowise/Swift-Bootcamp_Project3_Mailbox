@@ -14,7 +14,6 @@
 		E6ABC23119F2F2C400228A98 /* MailboxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6ABC23019F2F2C400228A98 /* MailboxTests.swift */; };
 		E6ABC23B19F307FB00228A98 /* MailboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6ABC23A19F307FB00228A98 /* MailboxViewController.swift */; };
 		E6ABC23E19F30A4800228A98 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6ABC23D19F30A4800228A98 /* Util.swift */; };
-		E6ABC24019F312BE00228A98 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6ABC23F19F312BE00228A98 /* MessageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +38,6 @@
 		E6ABC23019F2F2C400228A98 /* MailboxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxTests.swift; sourceTree = "<group>"; };
 		E6ABC23A19F307FB00228A98 /* MailboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxViewController.swift; sourceTree = "<group>"; };
 		E6ABC23D19F30A4800228A98 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
-		E6ABC23F19F312BE00228A98 /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,7 +117,6 @@
 		E6ABC23C19F30A3A00228A98 /* ViewContorllers */ = {
 			isa = PBXGroup;
 			children = (
-				E6ABC23F19F312BE00228A98 /* MessageViewController.swift */,
 				E6ABC23A19F307FB00228A98 /* MailboxViewController.swift */,
 				E6ABC23D19F30A4800228A98 /* Util.swift */,
 			);
@@ -228,7 +225,6 @@
 			files = (
 				E6ABC21B19F2F2C400228A98 /* AppDelegate.swift in Sources */,
 				E6ABC23E19F30A4800228A98 /* Util.swift in Sources */,
-				E6ABC24019F312BE00228A98 /* MessageViewController.swift in Sources */,
 				E6ABC23B19F307FB00228A98 /* MailboxViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -421,6 +417,7 @@
 				E6ABC23619F2F2C400228A98 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E6ABC23719F2F2C400228A98 /* Build configuration list for PBXNativeTarget "MailboxTests" */ = {
 			isa = XCConfigurationList;
@@ -429,6 +426,7 @@
 				E6ABC23919F2F2C400228A98 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
