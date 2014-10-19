@@ -117,36 +117,6 @@
             </objects>
             <point key="canvasLocation" x="162" y="359.5"/>
         </scene>
-        <!--Test View Controller-->
-        <scene sceneID="j4h-G1-wAS">
-            <objects>
-                <viewController id="wKq-Gw-VB5" customClass="TestViewController" customModule="Mailbox" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="hQh-u2-IFz">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <gestureRecognizers/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="WPn-4I-iUp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="592" y="-40"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="O0Q-gD-N1v">
-            <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="MVa-Be-isd" sceneMemberID="viewController">
-                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="sl5-gI-D01">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <toolbarItems/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="PzL-rg-uqp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="339" y="-679"/>
-        </scene>
     </scenes>
     <resources>
         <image name="archive_icon" width="25" height="25"/>
