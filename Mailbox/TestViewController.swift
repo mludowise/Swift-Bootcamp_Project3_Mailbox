@@ -35,7 +35,4 @@ class TestViewController: UIViewController {
     @IBAction func onEdgePan(sender: AnyObject) {
         println("edge")
     }
-    @IBAction func onPan(sender: AnyObject) {
-//        println("pan")
-    }
 }
