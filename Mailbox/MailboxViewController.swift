@@ -10,31 +10,31 @@ import UIKit
 
 class MailboxViewController: UIViewController {
     
-    //    private let kDragThreshold1 = 0.25 * UIScreen.mainScreen().bounds.width
-    //    private let kDragThreshold2 = 0.75 * UIScreen.mainScreen().bounds.width
     private let kDragThreshold1 : CGFloat = 60
     private let kDragThreshold2 : CGFloat = UIScreen.mainScreen().bounds.width - 60
     private let kIconInitialPosX : CGFloat = 10
     
+    private let kInboxIcon = "mail_nav_icon"
     private let kArchiveIcon = "archive_icon"
     private let kDeleteIcon = "delete_icon"
-    private let kScheduleIcon = "later_icon"
+    private let kLaterIcon = "later_icon"
     private let kListIcon = "list_icon"
     
     private let cancelColor = UIColor(red: 227/255.0, green: 227/255.0, blue: 227/255.0, alpha: 1)
-    private let scheduleColor = UIColor(red: 250/255.0, green: 211/255.0, blue: 98/255.0, alpha: 1)
+    private let laterColor = UIColor(red: 250/255.0, green: 211/255.0, blue: 98/255.0, alpha: 1)
     private let listColor = UIColor(red: 216/255.0, green: 166/255.0, blue: 117/255.0, alpha: 1)
     private let archiveColor = UIColor(red: 112/255.0, green: 217/255.0, blue:98/255.0, alpha: 1)
     private let deleteColor = UIColor(red: 235/255.0, green: 84/255.0, blue: 98/255.0, alpha: 1)
-    private let mailColor = UIColor(red: 112/255.0, green: 197/255.0, blue: 224/255.0, alpha: 1)
+    private let inboxColor = UIColor(red: 112/255.0, green: 197/255.0, blue: 224/255.0, alpha: 1)
     
     private enum SwipeAction {
-        case CancelSchedule     // User has not swiped left far enough to take any action
-        case Schedule       // User swiped left to schedule
+        case CancelLeft     // User has not swiped left far enough to take any action
+        case CancelRight    // User has not swiped right far enough to take any action
+        case Later          // User swiped left to schedule for later
         case List           // User swiped left to list
-        case CancelArchive    // User has not swiped right far enough to take any action
         case Archive        // User swiped right to archive
         case Delete         // User swiped right to delete
+        case Inbox          // User swiped left from archive view
     }
     
     private enum Direction {
@@ -55,6 +55,9 @@ class MailboxViewController: UIViewController {
     @IBOutlet weak var dummyFeedView: UIView!
     @IBOutlet weak var filterControl: UISegmentedControl!
     @IBOutlet weak var searchView: UIImageView!
+    @IBOutlet weak var navigationBar: UINavigationBar!
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var composeButton: UIBarButtonItem!
     
     var leftEdgePanGestureRecognizer : UIScreenEdgePanGestureRecognizer?
     var menuIsDisplayed = false
@@ -72,6 +75,10 @@ class MailboxViewController: UIViewController {
         
         prevFilterIndex = filterControl.selectedSegmentIndex
         updateFilterColor()
+        
+        // Change size of navbar
+        navigationBar.frame.size.height += navigationBar.frame.origin.y
+        navigationBar.frame.origin.y = 0
     }
     
     private func hideSearch() {
@@ -83,50 +90,86 @@ class MailboxViewController: UIViewController {
     // Returns which action the user indends to take based how far they swiped
     // swipeDistance < 0 for Left & > 0 for Right
     private func getActionFromSwipe(swipeDistance: CGFloat) -> SwipeAction {
+        
         if (swipeDistance < 0) { // Swipe left
-            if (swipeDistance > -kDragThreshold1) { // Gray Schedule
-                return .CancelSchedule
-            } else if (swipeDistance > -kDragThreshold2) { // Yellow Schedule
-                return .Schedule
+            if (swipeDistance > -kDragThreshold1) {
+                return .CancelLeft
+            } else if (swipeDistance > -kDragThreshold2) {
+                switch (filterControl.selectedSegmentIndex) {
+                case 0, 1: // Later & Inbox
+                    return .Later
+                    break
+                default: // Archive
+                    return .Inbox
+                }
             } else { // Brown List
-                return .List
+                switch (filterControl.selectedSegmentIndex) {
+                case 0, 1: // Later & Inbox
+                    return .List
+                    break
+                default: // Archive
+                    return .Later
+                }
             }
         } else { // Swipe right
             if (swipeDistance < kDragThreshold1) { // Gray archive
-                return .CancelArchive
+                return .CancelRight
             } else if (swipeDistance < kDragThreshold2) { // Green archive
-                return .Archive
+                switch (filterControl.selectedSegmentIndex) {
+                case 0: // Later
+                    return .Inbox
+                    break
+                case 1: // Inbox
+                    return .Archive
+                    break
+                default: // Archive
+                    return .Delete
+                }
             } else { // Red Delete
-                return .Delete
+                switch (filterControl.selectedSegmentIndex) {
+                case 0: // Later
+                    return .Archive
+                    break
+                default: // Inbox & Archive
+                    return .Delete
+                }
             }
         }
     }
     
     private func getColorForAction(action: SwipeAction) -> UIColor {
         switch (action) {
+        case .Inbox:
+            return inboxColor
         case .Archive:
             return archiveColor
         case .Delete:
             return deleteColor
-        case .Schedule:
-            return scheduleColor
+        case .Later:
+            return laterColor
         case .List:
             return listColor
-        default: // CancelSchedule, CancelArchive
+        default: // CancelLeft, CancelRight
             return cancelColor
         }
     }
     
     private func getIconFromAction(action: SwipeAction) -> UIImage {
         switch (action) {
+        case .Inbox:
+            return UIImage(named: kInboxIcon)
+        case .Archive:
+            return UIImage(named: kArchiveIcon)
         case .Delete:
             return UIImage(named: kDeleteIcon)
-        case .Schedule, .CancelSchedule:
-            return UIImage(named: kScheduleIcon)
+        case .Later:
+            return UIImage(named: kLaterIcon)
         case .List:
             return UIImage(named: kListIcon)
-        default: // CancelArchive, Archive
-            return UIImage(named: kArchiveIcon)
+        case .CancelLeft:
+            return getIconFromAction(getActionFromSwipe(-kDragThreshold1))
+        default: // CancelRight
+            return getIconFromAction(getActionFromSwipe(kDragThreshold1))
         }
     }
     
@@ -145,7 +188,7 @@ class MailboxViewController: UIViewController {
         
         if (panGestureRecognizer.state == UIGestureRecognizerState.Ended) {
             icon.hidden = true
-            if (action == .CancelArchive || action == .CancelSchedule) {
+            if (action == .CancelRight || action == .CancelLeft) {
                 cancelRow()
             } else {
                 removeRow(translation.x > 0 ? .Right : .Left, completion: { () -> Void in
@@ -163,7 +206,7 @@ class MailboxViewController: UIViewController {
     
     private func showScreenForAction(action: SwipeAction) {
         switch(action) {
-        case .Schedule:
+        case .Later:
             showRescheduleView()
             break
         case .List:
@@ -249,6 +292,10 @@ class MailboxViewController: UIViewController {
         dismissMenu()
     }
     
+    @IBAction func onMenuButton(sender: AnyObject) {
+        displayMenu()
+    }
+    
     func displayMenu() {
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             self.menuView.frame.origin.x = 0
@@ -293,15 +340,26 @@ class MailboxViewController: UIViewController {
     }
     
     private func updateFilterColor() {
+        var color : UIColor!
         switch (filterControl.selectedSegmentIndex) {
         case 0: // Later
-            filterControl.tintColor = scheduleColor
+            color = laterColor
             break
-        case 1: // Mail
-            filterControl.tintColor = mailColor
+        case 1: // Inbox
+            color = inboxColor
             break
         default: // Archive
-            filterControl.tintColor = archiveColor
+            color = archiveColor
         }
+//        navigationItem.leftBarButtonItem?.tintColor = color
+//        navigationItem.rightBarButtonItem?.tintColor = color
+        menuButton.tintColor = color
+        composeButton.tintColor = color
+        filterControl.tintColor = color
+    }
+    
+    // Compose Message Logic ----------------------------------
+    @IBAction func onComposeButton(sender: AnyObject) {
+        
     }
 }

@@ -81,6 +81,7 @@
 			children = (
 				E6ABC23C19F30A3A00228A98 /* ViewContorllers */,
 				E6ABC21A19F2F2C400228A98 /* AppDelegate.swift */,
+				E6ABC23D19F30A4800228A98 /* Util.swift */,
 				E6ABC21E19F2F2C400228A98 /* Main.storyboard */,
 				E6ABC22119F2F2C400228A98 /* Images.xcassets */,
 				E6ABC22319F2F2C400228A98 /* LaunchScreen.xib */,
@@ -118,7 +119,6 @@
 			isa = PBXGroup;
 			children = (
 				E6ABC23A19F307FB00228A98 /* MailboxViewController.swift */,
-				E6ABC23D19F30A4800228A98 /* Util.swift */,
 			);
 			name = ViewContorllers;
 			sourceTree = "<group>";
