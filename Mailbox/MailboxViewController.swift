@@ -26,7 +26,7 @@ class MailboxViewController: UIViewController {
     private let listColor = UIColor(red: 216/255.0, green: 166/255.0, blue: 117/255.0, alpha: 1)
     private let archiveColor = UIColor(red: 112/255.0, green: 217/255.0, blue:98/255.0, alpha: 1)
     private let deleteColor = UIColor(red: 235/255.0, green: 84/255.0, blue: 98/255.0, alpha: 1)
-    private let mailColor = UIColor(red: 112/255.0, green: 197/255.0, blue: 88/255.0, alpha: 1)
+    private let mailColor = UIColor(red: 112/255.0, green: 197/255.0, blue: 224/255.0, alpha: 1)
     
     private enum SwipeAction {
         case CancelSchedule     // User has not swiped left far enough to take any action
@@ -52,17 +52,30 @@ class MailboxViewController: UIViewController {
 
     @IBOutlet weak var scrollView: UIScrollView!
     
+    @IBOutlet weak var dummyFeedView: UIView!
+    @IBOutlet weak var filterControl: UISegmentedControl!
+    @IBOutlet weak var searchView: UIImageView!
+    
     var leftEdgePanGestureRecognizer : UIScreenEdgePanGestureRecognizer?
     var menuIsDisplayed = false
+    var prevFilterIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         resizeScrollViewForChildren(scrollView)
         menuView.frame.origin.x = -menuView.frame.width
+        hideSearch()
         
         leftEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: Selector("onPanFromLeftEdgeOfScreen"))
         leftEdgePanGestureRecognizer!.edges = UIRectEdge.Left
         view.addGestureRecognizer(leftEdgePanGestureRecognizer!)
+        
+        prevFilterIndex = filterControl.selectedSegmentIndex
+        updateFilterColor()
+    }
+    
+    private func hideSearch() {
+        scrollView.contentOffset.y = searchView.frame.height + searchView.frame.origin.y
     }
 
     // Presentation logic for message ---------------
@@ -237,7 +250,6 @@ class MailboxViewController: UIViewController {
     }
     
     func displayMenu() {
-        println("show")
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             self.menuView.frame.origin.x = 0
         })
@@ -245,10 +257,51 @@ class MailboxViewController: UIViewController {
     }
     
     func dismissMenu() {
-        println("dmismiss")
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             self.menuView.frame.origin.x = -self.menuView.frame.width
         })
         menuIsDisplayed = false
+    }
+    
+    // Logic for filter menu ----------------------------------
+    
+    @IBAction func onFilter(sender: UISegmentedControl) {
+        animateFilter(prevFilterIndex < filterControl.selectedSegmentIndex ? .Left : .Right)
+        prevFilterIndex = filterControl.selectedSegmentIndex
+    }
+    
+    private func animateFilter(direction: Direction) {
+        // Left
+        self.dummyFeedView.hidden = false
+        dummyFeedView.frame.origin.x = direction == .Left ?
+            UIScreen.mainScreen().bounds.width :    // Left
+            -dummyFeedView.frame.width              // Right
+        
+        
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            self.scrollView.frame.origin.x = direction == .Left ?
+                -self.scrollView.frame.width :      // Left
+                UIScreen.mainScreen().bounds.width  // Right
+                
+            self.dummyFeedView.frame.origin.x = 0
+            self.updateFilterColor()
+            }) { (animate: Bool) -> Void in
+                self.hideSearch()
+                self.scrollView.frame.origin.x = 0
+                self.dummyFeedView.hidden = true
+        }
+    }
+    
+    private func updateFilterColor() {
+        switch (filterControl.selectedSegmentIndex) {
+        case 0: // Later
+            filterControl.tintColor = scheduleColor
+            break
+        case 1: // Mail
+            filterControl.tintColor = mailColor
+            break
+        default: // Archive
+            filterControl.tintColor = archiveColor
+        }
     }
 }
