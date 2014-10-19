@@ -26,6 +26,7 @@ class MailboxViewController: UIViewController {
     private let listColor = UIColor(red: 216/255.0, green: 166/255.0, blue: 117/255.0, alpha: 1)
     private let archiveColor = UIColor(red: 112/255.0, green: 217/255.0, blue:98/255.0, alpha: 1)
     private let deleteColor = UIColor(red: 235/255.0, green: 84/255.0, blue: 98/255.0, alpha: 1)
+    private let mailColor = UIColor(red: 112/255.0, green: 197/255.0, blue: 88/255.0, alpha: 1)
     
     private enum SwipeAction {
         case CancelSchedule     // User has not swiped left far enough to take any action
@@ -34,6 +35,11 @@ class MailboxViewController: UIViewController {
         case CancelArchive    // User has not swiped right far enough to take any action
         case Archive        // User swiped right to archive
         case Delete         // User swiped right to delete
+    }
+    
+    private enum Direction {
+        case Left
+        case Right
     }
     
     @IBOutlet weak var messageView: UIImageView!
@@ -47,8 +53,6 @@ class MailboxViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     
     var leftEdgePanGestureRecognizer : UIScreenEdgePanGestureRecognizer?
-    var rightEdgePanGestureRecognizer : UIScreenEdgePanGestureRecognizer?
-    
     var menuIsDisplayed = false
     
     override func viewDidLoad() {
@@ -59,11 +63,10 @@ class MailboxViewController: UIViewController {
         leftEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: Selector("onPanFromLeftEdgeOfScreen"))
         leftEdgePanGestureRecognizer!.edges = UIRectEdge.Left
         view.addGestureRecognizer(leftEdgePanGestureRecognizer!)
-        
-//        rightEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: Selector("")
-//        messageView.addGestureRecognizer(leftEdgePanGestureRecognizer!)
     }
 
+    // Presentation logic for message ---------------
+    
     // Returns which action the user indends to take based how far they swiped
     // swipeDistance < 0 for Left & > 0 for Right
     private func getActionFromSwipe(swipeDistance: CGFloat) -> SwipeAction {
@@ -86,18 +89,6 @@ class MailboxViewController: UIViewController {
         }
     }
     
-    func removeRow(completion: (() -> Void)?) {
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
-            self.feedView.frame.origin.y -= self.messageView.frame.height
-            }, completion: { (animate: Bool) -> Void in
-                self.messageView.frame.origin.x = 0
-                self.feedView.frame.origin.y += self.messageView.frame.height
-                if (completion != nil) {
-                    completion!()
-                }
-        })
-    }
-    
     private func getColorForAction(action: SwipeAction) -> UIColor {
         switch (action) {
         case .Archive:
@@ -108,7 +99,7 @@ class MailboxViewController: UIViewController {
             return scheduleColor
         case .List:
             return listColor
-        default: // Cancel Schedule, CancelArchive
+        default: // CancelSchedule, CancelArchive
             return cancelColor
         }
     }
@@ -126,7 +117,7 @@ class MailboxViewController: UIViewController {
         }
     }
     
-    private func getIconPosFromAction(action: SwipeAction, offsetX: CGFloat) -> CGFloat {
+    private func getIconPosFromOffset(offsetX: CGFloat) -> CGFloat {
         if (offsetX < 0) { // Swipe left
             var screenWidth = UIScreen.mainScreen().bounds.width
             return min(screenWidth - kIconInitialPosX - icon.frame.width, screenWidth + offsetX + kIconInitialPosX)
@@ -135,65 +126,86 @@ class MailboxViewController: UIViewController {
         }
     }
     
+    @IBAction func onMessagePan(panGestureRecognizer: UIPanGestureRecognizer) {
+        var translation = panGestureRecognizer.translationInView(messageView)
+        var action = getActionFromSwipe(translation.x)
+        
+        if (panGestureRecognizer.state == UIGestureRecognizerState.Ended) {
+            icon.hidden = true
+            if (action == .CancelArchive || action == .CancelSchedule) {
+                cancelRow()
+            } else {
+                removeRow(translation.x > 0 ? .Right : .Left, completion: { () -> Void in
+                    self.showScreenForAction(action)
+                })
+            }
+        } else {
+            messageBackground.backgroundColor = getColorForAction(action)
+            icon.hidden = false
+            icon.image = getIconFromAction(action)
+            icon.frame.origin.x = getIconPosFromOffset(translation.x)
+            messageView.frame.origin.x = translation.x
+        }
+    }
+    
     private func showScreenForAction(action: SwipeAction) {
         switch(action) {
         case .Schedule:
-            self.rescheduleView.hidden = false
-            UIView.animateWithDuration(0.5, animations: { () -> Void in
-                self.rescheduleView.alpha = 1
-            })
+            showRescheduleView()
             break
         case .List:
-            self.listView.hidden = false
-            UIView.animateWithDuration(0.5, animations: { () -> Void in
-                self.listView.alpha = 1
-            })
+            showListView()
             break
         default:
             return
         }
     }
-
-    @IBAction func onMessagePan(panGestureRecognizer: UIPanGestureRecognizer) {
-        //        var point = panGestureRecognizer.locationInView(view)
-//        var velocity = panGestureRecognizer.velocityInView(view)
-        var translation = panGestureRecognizer.translationInView(messageView)
-        
-        var screenWidth = UIScreen.mainScreen().bounds.width
-        
-        var action = getActionFromSwipe(translation.x)
-        
-        if (panGestureRecognizer.state == UIGestureRecognizerState.Ended) {
-            icon.hidden = true
-            UIView.animateWithDuration(0.5, animations: { () -> Void in
-                switch (action) {
-                case .Archive, .Delete:
-                    self.messageView.frame.origin.x = screenWidth
-                    break
-                case .Schedule, .List:
-                    self.messageView.frame.origin.x = -self.messageView.frame.width
-                    break
-                default: // CancelSchedule, CancelArchive
-                    self.messageView.frame.origin.x = 0
-                }
-                }, completion: { (animate: Bool) -> Void in
-                    if (action != .CancelArchive && action != .CancelSchedule) {
-                        self.removeRow({ () -> Void in
-                            self.showScreenForAction(action)
-                        })
-                    }
-            })
-        } else {
-            var screenWidth = messageView.frame.width
-            messageBackground.backgroundColor = getColorForAction(action)
-            icon.hidden = false
-            icon.image = getIconFromAction(action)
-            icon.frame.origin.x = getIconPosFromAction(action, offsetX: translation.x)
-            messageView.frame.origin.x = translation.x
-        }
+    
+    func cancelRow() {
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            self.messageView.frame.origin.x = 0
+        })
     }
     
-    @IBAction func onViewTap(sender: UITapGestureRecognizer) {
+    private func removeRow(direction: Direction, completion: (() -> Void)?) {
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            switch (direction) {
+            case .Right:
+                    self.messageView.frame.origin.x = UIScreen.mainScreen().bounds.width
+                break
+            default: // Left
+                self.messageView.frame.origin.x = -self.messageView.frame.width
+            }
+            }, completion: { (animate: Bool) -> Void in
+                UIView.animateWithDuration(0.5, animations: { () -> Void in
+                    self.feedView.frame.origin.y -= self.messageView.frame.height
+                    }, completion: { (animate: Bool) -> Void in
+                        self.messageView.frame.origin.x = 0
+                        self.feedView.frame.origin.y += self.messageView.frame.height
+                        if (completion != nil) {
+                            completion!()
+                        }
+                })
+        })
+    }
+    
+    // Logic to show & hide reschedule or list screen --------------
+    
+    private func showRescheduleView() {
+        self.rescheduleView.hidden = false
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            self.rescheduleView.alpha = 1
+        })
+    }
+    
+    private func showListView() {
+        self.listView.hidden = false
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            self.listView.alpha = 1
+        })
+    }
+    
+    @IBAction func tapToDismissView(sender: UITapGestureRecognizer) {
         if (sender.view != nil) {
             UIView.animateWithDuration(0.5, animations: { () -> Void in
                 sender.view!.alpha = 0
@@ -217,6 +229,8 @@ class MailboxViewController: UIViewController {
             }
         }
     }
+    
+    // Logic to show & hide menu ----------------------------------
     
     @IBAction func onMenuSwipeLeft(sender: AnyObject) {
         dismissMenu()
