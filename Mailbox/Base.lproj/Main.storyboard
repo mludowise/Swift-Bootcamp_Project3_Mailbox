@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="wKq-Gw-VB5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
@@ -20,17 +20,11 @@
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="37"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <gestureRecognizers/>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="ws6-0p-hRl" appends="YES" id="jDm-qN-Lal"/>
-                                        </connections>
                                     </imageView>
                                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" id="J4e-fO-oMS">
                                         <rect key="frame" x="0.0" y="37" width="320" height="42"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <gestureRecognizers/>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="ws6-0p-hRl" appends="YES" id="J5p-Ju-CJ7"/>
-                                        </connections>
                                     </imageView>
                                     <view autoresizesSubviews="NO" contentMode="scaleToFill" id="8U4-Fd-uIs" userLabel="Message Background">
                                         <rect key="frame" x="0.0" y="79" width="320" height="86"/>
@@ -46,7 +40,6 @@
                                                 <gestureRecognizers/>
                                                 <connections>
                                                     <outletCollection property="gestureRecognizers" destination="Exc-Ze-wMI" appends="YES" id="bLo-y9-0xf"/>
-                                                    <outletCollection property="gestureRecognizers" destination="ws6-0p-hRl" appends="YES" id="Mrq-TN-xPB"/>
                                                 </connections>
                                             </imageView>
                                         </subviews>
@@ -56,16 +49,9 @@
                                         <rect key="frame" x="0.0" y="165" width="320" height="1202"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <gestureRecognizers/>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="qcJ-1q-alJ" appends="YES" id="Aps-l4-w6w"/>
-                                            <outletCollection property="gestureRecognizers" destination="ws6-0p-hRl" appends="YES" id="zDd-dY-EHH"/>
-                                        </connections>
                                     </imageView>
                                 </subviews>
                                 <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="ws6-0p-hRl" appends="YES" id="SrA-B0-gnl"/>
-                                </connections>
                             </scrollView>
                             <imageView hidden="YES" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reschedule" id="od9-ql-vQa">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -87,6 +73,9 @@
                                 <rect key="frame" x="-320" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="ZuY-2X-eG6" appends="YES" id="KoM-U5-CfS"/>
+                                </connections>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -120,17 +109,11 @@
                         <action selector="onViewTap:" destination="vXZ-lx-hvc" id="08p-sT-ivg"/>
                     </connections>
                 </tapGestureRecognizer>
-                <tapGestureRecognizer id="qcJ-1q-alJ">
+                <swipeGestureRecognizer direction="left" id="ZuY-2X-eG6">
                     <connections>
-                        <action selector="onTapFeed:" destination="vXZ-lx-hvc" id="2vx-Rl-fTY"/>
+                        <action selector="onMenuSwipeLeft:" destination="vXZ-lx-hvc" id="zht-kZ-cLI"/>
                     </connections>
-                </tapGestureRecognizer>
-                <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="ws6-0p-hRl">
-                    <rectEdge key="edges" left="YES" right="YES"/>
-                    <connections>
-                        <action selector="onPanFromLeftEdgeOfScreen:" destination="vXZ-lx-hvc" id="06L-ga-zuG"/>
-                    </connections>
-                </screenEdgePanGestureRecognizer>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="162" y="359.5"/>
         </scene>
@@ -143,18 +126,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="Myf-vY-z3V" appends="YES" id="VWL-5w-MSC"/>
-                        </connections>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WPn-4I-iUp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="Myf-vY-z3V">
-                    <rectEdge key="edges" left="YES" right="YES"/>
-                    <connections>
-                        <action selector="onEdgePan:" destination="wKq-Gw-VB5" id="LbS-Sz-2EU"/>
-                    </connections>
-                </screenEdgePanGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="592" y="-40"/>
         </scene>

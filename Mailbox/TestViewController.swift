@@ -12,8 +12,10 @@ class TestViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        var leftEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: Selector("onEdgePan"))
+        leftEdgePanGestureRecognizer.edges = UIRectEdge.Left
+        view.addGestureRecognizer(leftEdgePanGestureRecognizer)
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,7 +34,7 @@ class TestViewController: UIViewController {
     }
     */
 
-    @IBAction func onEdgePan(sender: AnyObject) {
+    func onEdgePan() {
         println("edge")
     }
 }

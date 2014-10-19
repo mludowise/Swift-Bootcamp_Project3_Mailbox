@@ -46,10 +46,22 @@ class MailboxViewController: UIViewController {
 
     @IBOutlet weak var scrollView: UIScrollView!
     
+    var leftEdgePanGestureRecognizer : UIScreenEdgePanGestureRecognizer?
+    var rightEdgePanGestureRecognizer : UIScreenEdgePanGestureRecognizer?
+    
+    var menuIsDisplayed = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         resizeScrollViewForChildren(scrollView)
         menuView.frame.origin.x = -menuView.frame.width
+        
+        leftEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: Selector("onPanFromLeftEdgeOfScreen"))
+        leftEdgePanGestureRecognizer!.edges = UIRectEdge.Left
+        view.addGestureRecognizer(leftEdgePanGestureRecognizer!)
+        
+//        rightEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: Selector("")
+//        messageView.addGestureRecognizer(leftEdgePanGestureRecognizer!)
     }
 
     // Returns which action the user indends to take based how far they swiped
@@ -191,23 +203,38 @@ class MailboxViewController: UIViewController {
         }
     }
     
-    @IBAction func onPanFromLeftEdgeOfScreen(panGestureRecognizer: UIScreenEdgePanGestureRecognizer) {
-        println("edge")
-        var translation = panGestureRecognizer.translationInView(messageView)
-        menuView.frame.origin.x = translation.x
-        if (panGestureRecognizer.state == UIGestureRecognizerState.Ended) {
-            var menuPosX : CGFloat = 0
-            if (translation.x > 0) { // Show Menu
-                menuPosX = 0
-            } else { // Hide Menu
-                menuPosX = -menuView.frame.width
+    func onPanFromLeftEdgeOfScreen() {
+        if (!menuIsDisplayed) {
+            var translation = leftEdgePanGestureRecognizer!.translationInView(messageView)
+            menuView.frame.origin.x = translation.x - menuView.frame.width
+            
+            if (leftEdgePanGestureRecognizer!.state == UIGestureRecognizerState.Ended) {
+                if (translation.x > kDragThreshold1) {
+                    displayMenu()
+                } else {
+                    dismissMenu()
+                }
             }
-            UIView.animateWithDuration(0.5, animations: { () -> Void in
-                self.menuView.frame.origin.x = menuPosX
-            })
         }
     }
-    @IBAction func onTapFeed(sender: AnyObject) {
-        println("tap")
+    
+    @IBAction func onMenuSwipeLeft(sender: AnyObject) {
+        dismissMenu()
+    }
+    
+    func displayMenu() {
+        println("show")
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            self.menuView.frame.origin.x = 0
+        })
+        menuIsDisplayed = true
+    }
+    
+    func dismissMenu() {
+        println("dmismiss")
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            self.menuView.frame.origin.x = -self.menuView.frame.width
+        })
+        menuIsDisplayed = false
     }
 }
