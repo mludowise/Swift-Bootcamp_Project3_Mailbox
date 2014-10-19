@@ -2,7 +2,7 @@
 
 The purpose of this homework is to leverage animations and gestures to implement more sophisticated interactions. We're going to use the techniques from this week to implement the Mailbox interactions.
 
-Time Spent: 3.5 hours and counting...
+Time Spent: 5 hours and counting...
 
 Completed User Stories:
 * [x]	On dragging the message left...
@@ -20,9 +20,9 @@ Completed User Stories:
     * [x]	Upon release, the message should continue to reveal the green background. When the animation it complete, it should hide the message.
   * [x]	After 260 pts, the icon should change to the delete icon and the background color should change to red.
     * [x]	Upon release, the message should continue to reveal the red background. When the animation it complete, it should hide the message.
-* [ ]	Optional: Panning from the edge should reveal the menu
-  * [ ]	Optional: If the menu is being revealed when the user lifts their finger, it should continue revealing.
-  * [ ]	Optional: If the menu is being hidden when the user lifts their finger, it should continue hiding.
+* [x]	Optional: Panning from the edge should reveal the menu
+  * [x]	Optional: If the menu is being revealed when the user lifts their finger, it should continue revealing.
+  * [x]	Optional: If the menu is being hidden when the user lifts their finger, it should continue hiding.
 * [ ]	Optional: Tapping on compose should animate to reveal the compose view.
 * [ ]	Optional: Tapping the segmented control in the title should swipe views in from the left or right.
 * [ ]	Optional: Shake to undo.
