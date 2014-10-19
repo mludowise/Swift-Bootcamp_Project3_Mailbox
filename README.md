@@ -2,7 +2,7 @@
 
 The purpose of this homework is to leverage animations and gestures to implement more sophisticated interactions. We're going to use the techniques from this week to implement the Mailbox interactions.
 
-Time Spent: 5 hours and counting...
+Time Spent: 7 hours and counting...
 
 Completed User Stories:
 * [x]	On dragging the message left...
@@ -24,7 +24,7 @@ Completed User Stories:
   * [x]	Optional: If the menu is being revealed when the user lifts their finger, it should continue revealing.
   * [x]	Optional: If the menu is being hidden when the user lifts their finger, it should continue hiding.
 * [ ]	Optional: Tapping on compose should animate to reveal the compose view.
-* [ ]	Optional: Tapping the segmented control in the title should swipe views in from the left or right.
+* [x]	Optional: Tapping the segmented control in the title should swipe views in from the left or right.
 * [ ]	Optional: Shake to undo.
 
 Notes:
