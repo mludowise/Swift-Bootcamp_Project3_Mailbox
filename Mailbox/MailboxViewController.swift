@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MailboxViewController: UIViewController, UIActionSheetDelegate {
+class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFieldDelegate, UIAlertViewDelegate {
     
     private let kDragThreshold1 : CGFloat = 60
     private let kDragThreshold2 : CGFloat = UIScreen.mainScreen().bounds.width - 60
@@ -44,33 +44,37 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate {
         case Right
     }
     
+    // Feed View
     @IBOutlet weak var messageView: UIImageView!
     @IBOutlet weak var messageBackground: UIView!
     @IBOutlet weak var feedView: UIImageView!
     @IBOutlet weak var icon: UIImageView!
-    @IBOutlet weak var rescheduleView: UIImageView!
-    @IBOutlet weak var listView: UIImageView!
-    @IBOutlet weak var menuView: UIImageView!
-
     @IBOutlet weak var scrollView: UIScrollView!
-    
-    @IBOutlet weak var dummyFeedView: UIView!
-    @IBOutlet weak var filterControl: UISegmentedControl!
     @IBOutlet weak var searchView: UIImageView!
     @IBOutlet weak var navigationBar: UINavigationBar!
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var composeButton: UIBarButtonItem!
     
+    var messageRemoved = false
     
+    // Compose Message
     @IBOutlet weak var composeView: UIView!
     @IBOutlet weak var composeMessageView: UIView!
     @IBOutlet weak var sendButton: UIBarButtonItem!
     @IBOutlet weak var toField: UITextField!
     @IBOutlet weak var subjectField: UITextField!
     @IBOutlet weak var messageField: UITextView!
-    
+
+    // Other Views
+    @IBOutlet weak var rescheduleView: UIImageView!
+    @IBOutlet weak var listView: UIImageView!
+    @IBOutlet weak var menuView: UIImageView!
     var leftEdgePanGestureRecognizer : UIScreenEdgePanGestureRecognizer?
     var menuIsDisplayed = false
+    
+    // Filtering
+    @IBOutlet weak var dummyFeedView: UIView!
+    @IBOutlet weak var filterControl: UISegmentedControl!
     var prevFilterIndex = 0
     
     override func viewDidLoad() {
@@ -86,15 +90,18 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate {
         prevFilterIndex = filterControl.selectedSegmentIndex
         updateFilterColor()
         
-        // Change size of navbar
-//        navigationBar.frame.size.height += navigationBar.frame.origin.y
-//        navigationBar.frame.origin.y = 0
+        toField.delegate = self
+        subjectField.delegate = self
     }
     
     private func hideSearch() {
         scrollView.contentOffset.y = searchView.frame.height + searchView.frame.origin.y
     }
-
+    
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
+    
     // Presentation logic for message ---------------
     
     // Returns which action the user indends to take based how far they swiped
@@ -108,7 +115,6 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate {
                 switch (filterControl.selectedSegmentIndex) {
                 case 0, 1: // Later & Inbox
                     return .Later
-                    break
                 default: // Archive
                     return .Inbox
                 }
@@ -116,7 +122,6 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate {
                 switch (filterControl.selectedSegmentIndex) {
                 case 0, 1: // Later & Inbox
                     return .List
-                    break
                 default: // Archive
                     return .Later
                 }
@@ -128,10 +133,8 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate {
                 switch (filterControl.selectedSegmentIndex) {
                 case 0: // Later
                     return .Inbox
-                    break
                 case 1: // Inbox
                     return .Archive
-                    break
                 default: // Archive
                     return .Delete
                 }
@@ -139,7 +142,6 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate {
                 switch (filterControl.selectedSegmentIndex) {
                 case 0: // Later
                     return .Archive
-                    break
                 default: // Inbox & Archive
                     return .Delete
                 }
@@ -234,6 +236,7 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate {
     }
     
     private func removeRow(direction: Direction, completion: (() -> Void)?) {
+        messageRemoved = true
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             switch (direction) {
             case .Right:
@@ -246,12 +249,18 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate {
                 UIView.animateWithDuration(0.5, animations: { () -> Void in
                     self.feedView.frame.origin.y -= self.messageView.frame.height
                     }, completion: { (animate: Bool) -> Void in
-                        self.messageView.frame.origin.x = 0
-                        self.feedView.frame.origin.y += self.messageView.frame.height
                         if (completion != nil) {
                             completion!()
                         }
                 })
+        })
+    }
+    
+    private func addRow() {
+        messageRemoved = false
+        self.messageView.frame.origin.x = 0
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            self.feedView.frame.origin.y += self.messageView.frame.height
         })
     }
     
@@ -293,6 +302,21 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate {
                     dismissMenu()
                 }
             }
+        }
+    }
+    
+    // Logic for undo ------------------------------------------
+    
+    override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent) {
+        if (motion == UIEventSubtype.MotionShake && messageRemoved) {
+            var alertView = UIAlertView(title: "Undo last action?", message: "Are you sure you want to undo that?", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "Undo")
+            alertView.show()
+        }
+    }
+    
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if (buttonIndex > 0) {
+            addRow()
         }
     }
     
@@ -361,8 +385,6 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate {
         default: // Archive
             color = archiveColor
         }
-//        navigationItem.leftBarButtonItem?.tintColor = color
-//        navigationItem.rightBarButtonItem?.tintColor = color
         menuButton.tintColor = color
         composeButton.tintColor = color
         filterControl.tintColor = color
@@ -390,7 +412,6 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate {
         }
     }
     func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-        println(buttonIndex)
         if (buttonIndex != 1) { // Anything but cancel
             hideComposeMessage()
         }
@@ -399,6 +420,15 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate {
     private func cancelMessage() {
         var actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: "Delete Draft", otherButtonTitles: "Keep Draft")
         actionSheet.showInView(view)
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if (textField == toField) {
+            subjectField.becomeFirstResponder()
+        } else if (textField == subjectField) {
+            messageField.becomeFirstResponder()
+        }
+        return true
     }
     
     @IBAction func onComposeButton(sender: AnyObject) {
