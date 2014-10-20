@@ -12,7 +12,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1432"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" id="zUg-GO-YLX">
+                            <navigationBar contentMode="scaleToFill" id="zUg-GO-YLX" userLabel="Feed Navigation Bar">
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
@@ -45,6 +45,11 @@
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="rect" keyPath="frame">
+                                        <rect key="value" x="0.0" y="0.0" width="320" height="64"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </navigationBar>
                             <scrollView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3cj-PQ-wdj">
                                 <rect key="frame" x="0.0" y="65" width="320" height="1432"/>
@@ -111,6 +116,77 @@
                                     <outletCollection property="gestureRecognizers" destination="ZuY-2X-eG6" appends="YES" id="KoM-U5-CfS"/>
                                 </connections>
                             </imageView>
+                            <view hidden="YES" alpha="0.0" contentMode="scaleToFill" id="d2Y-qC-Fws" userLabel="Compose View">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <navigationBar contentMode="scaleToFill" id="UW1-jv-feE" userLabel="Compose Navigation Bar">
+                                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <items>
+                                            <navigationItem id="S1F-s8-bnw">
+                                                <nil key="title"/>
+                                                <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ilo-zc-kK2">
+                                                    <color key="tintColor" red="0.43921568630000002" green="0.7725490196" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <connections>
+                                                        <action selector="onCancelButton:" destination="vXZ-lx-hvc" id="0NQ-8W-1iW"/>
+                                                    </connections>
+                                                </barButtonItem>
+                                                <barButtonItem key="rightBarButtonItem" enabled="NO" title="Send" id="hbq-eB-CQO">
+                                                    <color key="tintColor" red="0.43921568630000002" green="0.7725490196" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <connections>
+                                                        <action selector="onSendButton:" destination="vXZ-lx-hvc" id="1Zz-zY-qcy"/>
+                                                    </connections>
+                                                </barButtonItem>
+                                            </navigationItem>
+                                        </items>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="rect" keyPath="frame">
+                                                <rect key="value" x="0.0" y="0.0" width="320" height="64"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </navigationBar>
+                                    <view contentMode="scaleToFill" id="Qvi-Gq-jMx" userLabel="Compose Message View">
+                                        <rect key="frame" x="0.0" y="74" width="320" height="211"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="compose" id="0Vj-RI-gEb">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="211"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="q92-cK-Mzd" userLabel="To Field">
+                                                <rect key="frame" x="47" y="8" width="241" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                                <connections>
+                                                    <action selector="toFieldChanged:" destination="vXZ-lx-hvc" eventType="editingChanged" id="ubm-M0-Goi"/>
+                                                </connections>
+                                            </textField>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="vYK-5G-Pux" userLabel="Subject Field">
+                                                <rect key="frame" x="83" y="46" width="220" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="yes" returnKeyType="next"/>
+                                            </textField>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" usesAttributedText="YES" id="yDG-5Q-H2n">
+                                                <rect key="frame" x="17" y="84" width="286" height="85"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <attributedString key="attributedText"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="yes" spellCheckingType="yes"/>
+                                            </textView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="IxR-k2-LL4" appends="YES" id="wUt-D5-cFu"/>
+                                </connections>
+                            </view>
                             <view hidden="YES" contentMode="scaleToFill" id="71o-sX-RB1" userLabel="Dummy Feed">
                                 <rect key="frame" x="320" y="65" width="320" height="1432"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -135,6 +211,8 @@
                     <size key="freeformSize" width="320" height="1432"/>
                     <connections>
                         <outlet property="composeButton" destination="xlO-38-z5p" id="tfe-5h-N6a"/>
+                        <outlet property="composeMessageView" destination="Qvi-Gq-jMx" id="Ogg-LY-Bbb"/>
+                        <outlet property="composeView" destination="d2Y-qC-Fws" id="lzS-9y-g9f"/>
                         <outlet property="dummyFeedView" destination="71o-sX-RB1" id="OKR-Hs-x8H"/>
                         <outlet property="feedView" destination="2hY-aV-Ufo" id="lWq-9I-Hk9"/>
                         <outlet property="filterControl" destination="eGc-1z-C7a" id="WSh-t9-0UA"/>
@@ -143,11 +221,15 @@
                         <outlet property="menuButton" destination="AVW-GJ-05B" id="LpJ-Ze-VaQ"/>
                         <outlet property="menuView" destination="rFt-J1-p3h" id="JrW-p8-ReC"/>
                         <outlet property="messageBackground" destination="8U4-Fd-uIs" id="FW8-OB-Okv"/>
+                        <outlet property="messageField" destination="yDG-5Q-H2n" id="jRv-Kv-56x"/>
                         <outlet property="messageView" destination="VSy-ub-tnm" id="f5c-sX-FnS"/>
                         <outlet property="navigationBar" destination="zUg-GO-YLX" id="F5f-JY-mZk"/>
                         <outlet property="rescheduleView" destination="od9-ql-vQa" id="xD8-fC-c2C"/>
                         <outlet property="scrollView" destination="3cj-PQ-wdj" id="xlF-0R-GDn"/>
                         <outlet property="searchView" destination="J4e-fO-oMS" id="eYM-ei-xaM"/>
+                        <outlet property="sendButton" destination="hbq-eB-CQO" id="WQu-Gh-dLb"/>
+                        <outlet property="subjectField" destination="vYK-5G-Pux" id="hQl-MZ-Xbn"/>
+                        <outlet property="toField" destination="q92-cK-Mzd" id="yEa-JD-es9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -171,12 +253,18 @@
                         <action selector="onMenuSwipeLeft:" destination="vXZ-lx-hvc" id="zht-kZ-cLI"/>
                     </connections>
                 </swipeGestureRecognizer>
+                <tapGestureRecognizer id="IxR-k2-LL4" userLabel="Tap to Cancel Compose">
+                    <connections>
+                        <action selector="onTapToCancelCompose:" destination="vXZ-lx-hvc" id="LYu-DB-0b8"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="162" y="359.5"/>
+            <point key="canvasLocation" x="162" y="359"/>
         </scene>
     </scenes>
     <resources>
         <image name="archive_icon" width="25" height="25"/>
+        <image name="compose" width="320" height="211"/>
         <image name="feed" width="320" height="1202"/>
         <image name="help_label" width="320" height="37"/>
         <image name="later_nav_icon" width="25" height="20"/>

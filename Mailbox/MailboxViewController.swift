@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MailboxViewController: UIViewController {
+class MailboxViewController: UIViewController, UIActionSheetDelegate {
     
     private let kDragThreshold1 : CGFloat = 60
     private let kDragThreshold2 : CGFloat = UIScreen.mainScreen().bounds.width - 60
@@ -26,6 +26,8 @@ class MailboxViewController: UIViewController {
     private let archiveColor = UIColor(red: 112/255.0, green: 217/255.0, blue:98/255.0, alpha: 1)
     private let deleteColor = UIColor(red: 235/255.0, green: 84/255.0, blue: 98/255.0, alpha: 1)
     private let inboxColor = UIColor(red: 112/255.0, green: 197/255.0, blue: 224/255.0, alpha: 1)
+    
+    private let kComposeMessageOrigin = CGPoint(x: 0, y: 85)
     
     private enum SwipeAction {
         case CancelLeft     // User has not swiped left far enough to take any action
@@ -59,6 +61,14 @@ class MailboxViewController: UIViewController {
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var composeButton: UIBarButtonItem!
     
+    
+    @IBOutlet weak var composeView: UIView!
+    @IBOutlet weak var composeMessageView: UIView!
+    @IBOutlet weak var sendButton: UIBarButtonItem!
+    @IBOutlet weak var toField: UITextField!
+    @IBOutlet weak var subjectField: UITextField!
+    @IBOutlet weak var messageField: UITextView!
+    
     var leftEdgePanGestureRecognizer : UIScreenEdgePanGestureRecognizer?
     var menuIsDisplayed = false
     var prevFilterIndex = 0
@@ -77,8 +87,8 @@ class MailboxViewController: UIViewController {
         updateFilterColor()
         
         // Change size of navbar
-        navigationBar.frame.size.height += navigationBar.frame.origin.y
-        navigationBar.frame.origin.y = 0
+//        navigationBar.frame.size.height += navigationBar.frame.origin.y
+//        navigationBar.frame.origin.y = 0
     }
     
     private func hideSearch() {
@@ -359,7 +369,55 @@ class MailboxViewController: UIViewController {
     }
     
     // Compose Message Logic ----------------------------------
+    
+    private func showComposeMessage() {
+        composeView.hidden = false
+        composeMessageView.frame.origin.y = UIScreen.mainScreen().bounds.height
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.composeView.alpha = 1
+            self.composeMessageView.frame.origin = self.kComposeMessageOrigin
+            self.toField.becomeFirstResponder()
+        })
+    }
+    
+    private func hideComposeMessage() {
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.composeView.alpha = 0
+            self.composeMessageView.frame.origin.y = UIScreen.mainScreen().bounds.height
+            self.view.endEditing(true)
+            }) { (animate: Bool) -> Void in
+                
+        }
+    }
+    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
+        println(buttonIndex)
+        if (buttonIndex != 1) { // Anything but cancel
+            hideComposeMessage()
+        }
+    }
+
+    private func cancelMessage() {
+        var actionSheet = UIActionSheet(title: nil, delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: "Delete Draft", otherButtonTitles: "Keep Draft")
+        actionSheet.showInView(view)
+    }
+    
     @IBAction func onComposeButton(sender: AnyObject) {
-        
+        showComposeMessage()
+    }
+    
+    @IBAction func toFieldChanged(sender: AnyObject) {
+        sendButton.enabled = toField.text != ""
+    }
+    
+    @IBAction func onSendButton(sender: AnyObject) {
+        hideComposeMessage()
+    }
+    
+    @IBAction func onCancelButton(sender: AnyObject) {
+        cancelMessage()
+    }
+    
+    @IBAction func onTapToCancelCompose(sender: AnyObject) {
+        cancelMessage()
     }
 }
