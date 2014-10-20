@@ -264,6 +264,26 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
         })
     }
     
+    // Logic for undo ------------------------------------------
+    
+    override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent) {
+        if (motion == UIEventSubtype.MotionShake) {
+            if (messageRemoved) {
+                var alertView = UIAlertView(title: "Undo last action?", message: "Are you sure you want to undo that?", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "Undo")
+                alertView.show()
+            } else {
+                var alertView = UIAlertView(title: "Nothing to undo.", message: "", delegate: nil, cancelButtonTitle: "OK")
+                alertView.show()
+            }
+        }
+    }
+    
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if (buttonIndex > 0) {
+            addRow()
+        }
+    }
+    
     // Logic to show & hide reschedule or list screen --------------
     
     private func showRescheduleView() {
@@ -302,21 +322,6 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
                     dismissMenu()
                 }
             }
-        }
-    }
-    
-    // Logic for undo ------------------------------------------
-    
-    override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent) {
-        if (motion == UIEventSubtype.MotionShake && messageRemoved) {
-            var alertView = UIAlertView(title: "Undo last action?", message: "Are you sure you want to undo that?", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "Undo")
-            alertView.show()
-        }
-    }
-    
-    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-        if (buttonIndex > 0) {
-            addRow()
         }
     }
     
