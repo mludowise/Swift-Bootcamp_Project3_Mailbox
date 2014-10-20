@@ -310,13 +310,18 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
         }
     }
     
+    // Logic to show & hide menu ----------------------------------
+    
     func onPanFromLeftEdgeOfScreen() {
         if (!menuIsDisplayed) {
             var translation = leftEdgePanGestureRecognizer!.translationInView(messageView)
+            var velocity = leftEdgePanGestureRecognizer!.velocityInView(view)
+            
             menuView.frame.origin.x = translation.x - menuView.frame.width
             
             if (leftEdgePanGestureRecognizer!.state == UIGestureRecognizerState.Ended) {
-                if (translation.x > kDragThreshold1) {
+//                if (translation.x > kDragThreshold1) {
+                if (velocity.x > 0) {
                     displayMenu()
                 } else {
                     dismissMenu()
@@ -324,8 +329,6 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
             }
         }
     }
-    
-    // Logic to show & hide menu ----------------------------------
     
     @IBAction func onMenuSwipeLeft(sender: AnyObject) {
         dismissMenu()
