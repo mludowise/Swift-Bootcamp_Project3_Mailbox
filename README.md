@@ -2,7 +2,7 @@
 
 The purpose of this homework is to leverage animations and gestures to implement more sophisticated interactions. We're going to use the techniques from this week to implement the Mailbox interactions.
 
-Time Spent: 8.5 hours
+Time Spent: 10 hours
 
 Completed User Stories:
 * [x]	On dragging the message left...
