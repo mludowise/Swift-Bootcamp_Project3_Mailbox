@@ -86,11 +86,11 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
         
         var edgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: "onPanFromLeftEdgeOfScreen:")
         edgePanGestureRecognizer.edges = UIRectEdge.Left
-        view.addGestureRecognizer(edgePanGestureRecognizer)
+        mainFeedView.addGestureRecognizer(edgePanGestureRecognizer)
         
         edgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: "onPanFromRightEdgeOfScreen:")
         edgePanGestureRecognizer.edges = UIRectEdge.Right
-        view.addGestureRecognizer(edgePanGestureRecognizer)
+        mainFeedView.addGestureRecognizer(edgePanGestureRecognizer)
         
         
         prevFilterIndex = filterControl.selectedSegmentIndex
@@ -320,8 +320,8 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
     
     func onPanFromLeftEdgeOfScreen(sender: UIPanGestureRecognizer) {
         if (!menuIsDisplayed) {
-            var translation = sender.translationInView(view)
-            var velocity = sender.velocityInView(view)
+            var translation = sender.translationInView(mainFeedView)
+            var velocity = sender.velocityInView(mainFeedView)
             
             mainFeedView.frame.origin.x = translation.x
             
@@ -337,8 +337,8 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
     
     func onPanFromRightEdgeOfScreen(sender: UIPanGestureRecognizer) {
         if (menuIsDisplayed) {
-            var translation = sender.translationInView(view)
-            var velocity = sender.velocityInView(view)
+            var translation = sender.translationInView(mainFeedView)
+            var velocity = sender.velocityInView(mainFeedView)
             
             mainFeedView.frame.origin.x = translation.x + mainFeedView.frame.width - 20
             
