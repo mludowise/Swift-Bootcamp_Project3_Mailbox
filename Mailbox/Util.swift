@@ -15,4 +15,5 @@ func resizeScrollViewForChildren(scrollView: UIScrollView) {
         height += view.frame.height
     }
     scrollView.contentSize.height = height
+    scrollView.contentSize.width = scrollView.frame.width
 }

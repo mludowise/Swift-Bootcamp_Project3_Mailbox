@@ -81,6 +81,8 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
     override func viewDidLoad() {
         super.viewDidLoad()
         resizeScrollViewForChildren(scrollView)
+        println(scrollView.contentSize)
+        println(scrollView.frame.size)
 //        menuView.frame.origin.x = -menuView.frame.width
         hideSearch()
         
