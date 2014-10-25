@@ -71,6 +71,7 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
     @IBOutlet weak var menuView: UIImageView!
     var leftEdgePanGestureRecognizer : UIScreenEdgePanGestureRecognizer?
     var menuIsDisplayed = false
+    @IBOutlet weak var mainFeedView: UIView!
     
     // Filtering
     @IBOutlet weak var dummyFeedView: UIView!
@@ -80,7 +81,7 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
     override func viewDidLoad() {
         super.viewDidLoad()
         resizeScrollViewForChildren(scrollView)
-        menuView.frame.origin.x = -menuView.frame.width
+//        menuView.frame.origin.x = -menuView.frame.width
         hideSearch()
         
         leftEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: Selector("onPanFromLeftEdgeOfScreen"))
@@ -169,15 +170,15 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
     private func getIconFromAction(action: SwipeAction) -> UIImage {
         switch (action) {
         case .Inbox:
-            return UIImage(named: kInboxIcon)
+            return UIImage(named: kInboxIcon)!
         case .Archive:
-            return UIImage(named: kArchiveIcon)
+            return UIImage(named: kArchiveIcon)!
         case .Delete:
-            return UIImage(named: kDeleteIcon)
+            return UIImage(named: kDeleteIcon)!
         case .Later:
-            return UIImage(named: kLaterIcon)
+            return UIImage(named: kLaterIcon)!
         case .List:
-            return UIImage(named: kListIcon)
+            return UIImage(named: kListIcon)!
         case .CancelLeft:
             return getIconFromAction(getActionFromSwipe(-kDragThreshold1))
         default: // CancelRight
@@ -317,7 +318,8 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
             var translation = leftEdgePanGestureRecognizer!.translationInView(messageView)
             var velocity = leftEdgePanGestureRecognizer!.velocityInView(view)
             
-            menuView.frame.origin.x = translation.x - menuView.frame.width
+            mainFeedView.frame.origin.x = translation.x
+//            menuView.frame.origin.x = translation.x - menuView.frame.width
             
             if (leftEdgePanGestureRecognizer!.state == UIGestureRecognizerState.Ended) {
 //                if (translation.x > kDragThreshold1) {
@@ -330,6 +332,14 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
         }
     }
     
+    @IBAction func onMainViewPanFromRightEdgeOfScreen() {
+//        if (menuIsDisplayed) {
+//            var translation = leftEdgePanGestureRecognizer!.translationInView(messageView)
+//            var velocity = leftEdgePanGestureRecognizer!.velocityInView(view)
+//            mainFeedView.frame.origin.x = translation.x
+//        }
+    }
+    
     @IBAction func onMenuSwipeLeft(sender: AnyObject) {
         dismissMenu()
     }
@@ -340,14 +350,16 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
     
     func displayMenu() {
         UIView.animateWithDuration(0.5, animations: { () -> Void in
-            self.menuView.frame.origin.x = 0
+//            self.menuView.frame.origin.x = 0
+            self.mainFeedView.frame.origin.x = UIScreen.mainScreen().bounds.width - 20
         })
         menuIsDisplayed = true
     }
     
     func dismissMenu() {
         UIView.animateWithDuration(0.5, animations: { () -> Void in
-            self.menuView.frame.origin.x = -self.menuView.frame.width
+//            self.menuView.frame.origin.x = -self.menuView.frame.width
+            self.mainFeedView.frame.origin.x = 0
         })
         menuIsDisplayed = false
     }
