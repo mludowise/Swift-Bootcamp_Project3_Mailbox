@@ -69,7 +69,7 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
     @IBOutlet weak var rescheduleView: UIImageView!
     @IBOutlet weak var listView: UIImageView!
     @IBOutlet weak var menuView: UIImageView!
-    var leftEdgePanGestureRecognizer : UIScreenEdgePanGestureRecognizer?
+//    var leftEdgePanGestureRecognizer : UIScreenEdgePanGestureRecognizer?
     var menuIsDisplayed = false
     @IBOutlet weak var mainFeedView: UIView!
     
@@ -84,9 +84,14 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
 //        menuView.frame.origin.x = -menuView.frame.width
         hideSearch()
         
-        leftEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: Selector("onPanFromLeftEdgeOfScreen"))
-        leftEdgePanGestureRecognizer!.edges = UIRectEdge.Left
-        view.addGestureRecognizer(leftEdgePanGestureRecognizer!)
+        var edgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: "onPanFromLeftEdgeOfScreen:")
+        edgePanGestureRecognizer.edges = UIRectEdge.Left
+        view.addGestureRecognizer(edgePanGestureRecognizer)
+        
+        edgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: "onPanFromRightEdgeOfScreen:")
+        edgePanGestureRecognizer.edges = UIRectEdge.Right
+        view.addGestureRecognizer(edgePanGestureRecognizer)
+        
         
         prevFilterIndex = filterControl.selectedSegmentIndex
         updateFilterColor()
@@ -313,15 +318,15 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
     
     // Logic to show & hide menu ----------------------------------
     
-    func onPanFromLeftEdgeOfScreen() {
+    func onPanFromLeftEdgeOfScreen(sender: UIPanGestureRecognizer) {
         if (!menuIsDisplayed) {
-            var translation = leftEdgePanGestureRecognizer!.translationInView(messageView)
-            var velocity = leftEdgePanGestureRecognizer!.velocityInView(view)
+            var translation = sender.translationInView(messageView)
+            var velocity = sender.velocityInView(view)
             
             mainFeedView.frame.origin.x = translation.x
 //            menuView.frame.origin.x = translation.x - menuView.frame.width
             
-            if (leftEdgePanGestureRecognizer!.state == UIGestureRecognizerState.Ended) {
+            if (sender.state == UIGestureRecognizerState.Ended) {
 //                if (translation.x > kDragThreshold1) {
                 if (velocity.x > 0) {
                     displayMenu()
@@ -332,7 +337,7 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
         }
     }
     
-    @IBAction func onMainViewPanFromRightEdgeOfScreen() {
+    func onPanFromRightEdgeOfScreen() {
 //        if (menuIsDisplayed) {
 //            var translation = leftEdgePanGestureRecognizer!.translationInView(messageView)
 //            var velocity = leftEdgePanGestureRecognizer!.velocityInView(view)
