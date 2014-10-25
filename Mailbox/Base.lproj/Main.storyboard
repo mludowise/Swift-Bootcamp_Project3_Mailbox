@@ -106,6 +106,10 @@
                                     </scrollView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="ue5-eL-Pl7" appends="YES" id="ptT-uB-Wsg"/>
+                                </connections>
                             </view>
                             <imageView hidden="YES" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reschedule" id="od9-ql-vQa">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -264,6 +268,11 @@
                 <tapGestureRecognizer id="IxR-k2-LL4" userLabel="Tap to Cancel Compose">
                     <connections>
                         <action selector="onTapToCancelCompose:" destination="vXZ-lx-hvc" id="LYu-DB-0b8"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="ue5-eL-Pl7" userLabel="Tap on Main View">
+                    <connections>
+                        <action selector="onMainViewTap:" destination="vXZ-lx-hvc" id="RD6-0S-FWj"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>

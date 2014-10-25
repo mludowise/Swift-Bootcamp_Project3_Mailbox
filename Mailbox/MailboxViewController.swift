@@ -320,14 +320,12 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
     
     func onPanFromLeftEdgeOfScreen(sender: UIPanGestureRecognizer) {
         if (!menuIsDisplayed) {
-            var translation = sender.translationInView(messageView)
+            var translation = sender.translationInView(view)
             var velocity = sender.velocityInView(view)
             
             mainFeedView.frame.origin.x = translation.x
-//            menuView.frame.origin.x = translation.x - menuView.frame.width
             
             if (sender.state == UIGestureRecognizerState.Ended) {
-//                if (translation.x > kDragThreshold1) {
                 if (velocity.x > 0) {
                     displayMenu()
                 } else {
@@ -337,12 +335,27 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
         }
     }
     
-    func onPanFromRightEdgeOfScreen() {
-//        if (menuIsDisplayed) {
-//            var translation = leftEdgePanGestureRecognizer!.translationInView(messageView)
-//            var velocity = leftEdgePanGestureRecognizer!.velocityInView(view)
-//            mainFeedView.frame.origin.x = translation.x
-//        }
+    func onPanFromRightEdgeOfScreen(sender: UIPanGestureRecognizer) {
+        if (menuIsDisplayed) {
+            var translation = sender.translationInView(view)
+            var velocity = sender.velocityInView(view)
+            
+            mainFeedView.frame.origin.x = translation.x + mainFeedView.frame.width - 20
+            
+            if (sender.state == UIGestureRecognizerState.Ended) {
+                if (velocity.x > 0) {
+                    displayMenu()
+                } else {
+                    dismissMenu()
+                }
+            }
+        }
+    }
+    
+    @IBAction func onMainViewTap(sender: UITapGestureRecognizer) {
+        if (menuIsDisplayed) {
+            dismissMenu()
+        }
     }
     
     @IBAction func onMenuSwipeLeft(sender: AnyObject) {
