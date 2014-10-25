@@ -69,7 +69,6 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
     @IBOutlet weak var rescheduleView: UIImageView!
     @IBOutlet weak var listView: UIImageView!
     @IBOutlet weak var menuView: UIImageView!
-//    var leftEdgePanGestureRecognizer : UIScreenEdgePanGestureRecognizer?
     var menuIsDisplayed = false
     @IBOutlet weak var mainFeedView: UIView!
     
@@ -81,9 +80,6 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
     override func viewDidLoad() {
         super.viewDidLoad()
         resizeScrollViewForChildren(scrollView)
-        println(scrollView.contentSize)
-        println(scrollView.frame.size)
-//        menuView.frame.origin.x = -menuView.frame.width
         hideSearch()
         
         var edgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: "onPanFromLeftEdgeOfScreen:")
@@ -370,7 +366,6 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
     
     func displayMenu() {
         UIView.animateWithDuration(0.5, animations: { () -> Void in
-//            self.menuView.frame.origin.x = 0
             self.mainFeedView.frame.origin.x = UIScreen.mainScreen().bounds.width - 20
         })
         menuIsDisplayed = true
@@ -378,7 +373,6 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
     
     func dismissMenu() {
         UIView.animateWithDuration(0.5, animations: { () -> Void in
-//            self.menuView.frame.origin.x = -self.menuView.frame.width
             self.mainFeedView.frame.origin.x = 0
         })
         menuIsDisplayed = false
