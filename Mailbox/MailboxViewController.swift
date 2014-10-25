@@ -427,6 +427,10 @@ class MailboxViewController: UIViewController, UIActionSheetDelegate, UITextFiel
     // Compose Message Logic ----------------------------------
     
     private func showComposeMessage() {
+        toField.text = ""
+        subjectField.text = ""
+        messageField.text = ""
+        
         composeView.hidden = false
         composeMessageView.frame.origin.y = UIScreen.mainScreen().bounds.height
         UIView.animateWithDuration(0.25, animations: { () -> Void in
